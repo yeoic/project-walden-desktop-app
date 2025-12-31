@@ -683,7 +683,7 @@ class AppBlockerGUI:
         except Exception:
             pass
 
-        # 시스템 앱 제외
+        # 시스템 앱 및 자기 자신 제외
         exclude = {'Automator', 'Boot Camp Assistant', 'Bluetooth File Exchange',
                    'ColorSync Utility', 'Console', 'Digital Color Meter', 'Disk Utility',
                    'DVD Player', 'Font Book', 'Grapher', 'Keychain Access',
@@ -691,7 +691,8 @@ class AppBlockerGUI:
                    'System Information', 'Terminal', 'VoiceOver Utility', 'AirPort Utility',
                    'Audio MIDI Setup', 'Directory Utility', 'Wireless Diagnostics',
                    'loginwindow', 'WindowServer', 'Dock', 'SystemUIServer', 'Finder',
-                   'ControlCenter', 'NotificationCenter', 'Siri'}
+                   'ControlCenter', 'NotificationCenter', 'Siri',
+                   '집중모드', 'Python', 'python3'}
 
         apps = {app for app in apps if app not in exclude}
 
