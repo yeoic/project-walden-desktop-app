@@ -8,6 +8,7 @@ import os
 import sys
 import json
 import socket
+import unicodedata
 from datetime import datetime, timedelta
 
 # macOS tkinter 경고 메시지 숨기기
@@ -689,6 +690,8 @@ class AppBlockerGUI:
                 app_list = result.stdout.strip().split(', ')
                 for app in app_list:
                     app = app.strip()
+                    # macOS NFD -> NFC 정규화 (한글 비교 문제 해결)
+                    app = unicodedata.normalize('NFC', app)
                     if app and app not in exclude:
                         apps.add(app)
         except Exception:
