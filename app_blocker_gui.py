@@ -654,6 +654,17 @@ class AppBlockerGUI:
         """설치된 앱 + 실행 중인 앱 반환 (macOS)"""
         apps = set()
 
+        # 시스템 앱 및 자기 자신 제외
+        exclude = {'Automator', 'Boot Camp Assistant', 'Bluetooth File Exchange',
+                   'ColorSync Utility', 'Console', 'Digital Color Meter', 'Disk Utility',
+                   'DVD Player', 'Font Book', 'Grapher', 'Keychain Access',
+                   'Migration Assistant', 'Screenshot', 'Stickies', 'System Preferences',
+                   'System Information', 'Terminal', 'VoiceOver Utility', 'AirPort Utility',
+                   'Audio MIDI Setup', 'Directory Utility', 'Wireless Diagnostics',
+                   'loginwindow', 'WindowServer', 'Dock', 'SystemUIServer', 'Finder',
+                   'ControlCenter', 'NotificationCenter', 'Siri',
+                   '집중모드', 'Python', 'python3'}
+
         # 1. /Applications 폴더에서 설치된 앱 가져오기
         app_dirs = ['/Applications', os.path.expanduser('~/Applications')]
         for app_dir in app_dirs:
@@ -678,22 +689,12 @@ class AppBlockerGUI:
                 app_list = result.stdout.strip().split(', ')
                 for app in app_list:
                     app = app.strip()
-                    if app:
+                    if app and app not in exclude:
                         apps.add(app)
         except Exception:
             pass
 
-        # 시스템 앱 및 자기 자신 제외
-        exclude = {'Automator', 'Boot Camp Assistant', 'Bluetooth File Exchange',
-                   'ColorSync Utility', 'Console', 'Digital Color Meter', 'Disk Utility',
-                   'DVD Player', 'Font Book', 'Grapher', 'Keychain Access',
-                   'Migration Assistant', 'Screenshot', 'Stickies', 'System Preferences',
-                   'System Information', 'Terminal', 'VoiceOver Utility', 'AirPort Utility',
-                   'Audio MIDI Setup', 'Directory Utility', 'Wireless Diagnostics',
-                   'loginwindow', 'WindowServer', 'Dock', 'SystemUIServer', 'Finder',
-                   'ControlCenter', 'NotificationCenter', 'Siri',
-                   '집중모드', 'Python', 'python3'}
-
+        # 제외 목록 적용
         apps = {app for app in apps if app not in exclude}
 
         return sorted(apps)
